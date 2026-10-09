@@ -1,0 +1,21 @@
+
+> mock-fintech-dashboard@1.0.0 heal
+> node --disable-warning=ExperimentalWarning tests/self-healing/run-healing.js
+
+
+Self-healing (heuristic): 5/5 broken locators healed & validated.
+ - applyFiltersButton   HEALED (pending human review)
+     #apply-btn
+  -> page.getByRole('button', { name: 'Apply filters', exact: true })
+ - statusFilter         HEALED (pending human review)
+     xpath=/html/body/div[1]/main/section[3]/form/label[2]/select
+  -> page.getByRole('combobox', { name: 'Status', exact: true })
+ - resultSummary        HEALED (pending human review)
+     .results-summary
+  -> page.getByTestId('result-count')
+ - trendChart           HEALED (pending human review)
+     canvas#chart-0
+  -> page.getByRole('img', { name: 'Daily transaction volume chart', exact: true })
+ - sendTransferButton   HEALED (pending human review)
+     button.btn-primary.submit-transfer
+  -> page.getByRole('button', { name: 'Send transfer', exact: true })

@@ -1,0 +1,9 @@
+
+=== results/broken/cucumber-report.json ===
+
+Feature: Brittle locators (self-healing exercise)
+  FAIL  Filter failed transactions using brittle locators
+        ↳ When I choose status "failed" with the brittle status filter
+          locator.selectOption: Timeout 3000ms exceeded.
+
+Total: 1 scenarios, 0 passed, 1 failed

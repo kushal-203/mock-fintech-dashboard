@@ -1,0 +1,32 @@
+{
+  "name": "mock-fintech-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock FinTech Transaction Dashboard \u2013 Express + SQLite API, Chart.js dashboard, Playwright + Cucumber BDD suite with AI self-healing POC",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "1.63.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^18.0.6",
+    "playwright": "1.63.0"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning backend/server.js",
+    "test": "npm run test:api && npm run test:ui",
+    "test:ui": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning cucumber-js --profile ui",
+    "test:api": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning cucumber-js --profile api",
+    "test:broken": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning cucumber-js --profile broken",
+    "heal": "node --disable-warning=ExperimentalWarning tests/self-healing/run-healing.js",
+    "heal:verify": "node --disable-warning=ExperimentalWarning tests/self-healing/verify-validator.js",
+    "db:query": "node --disable-warning=ExperimentalWarning database/tools/run-round-trips.js",
+    "db:seed": "node database/tools/generate-seed.js",
+    "report:summary": "node scripts/summarise-results.js"
+  }
+}

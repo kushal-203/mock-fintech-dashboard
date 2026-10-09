@@ -1,0 +1,81 @@
+
+=== results/api/cucumber-report.json ===
+
+Feature: GET /api/transactions and GET /api/analytics/round-trips
+  PASS  Default listing is paginated and newest first
+  PASS  Sorting by date asc
+  PASS  Sorting by amount desc
+  PASS  Sorting by amount asc
+  PASS  Filtering by account and status
+  PASS  Invalid query parameter page=0 is rejected with 400
+  PASS  Invalid query parameter page=abc is rejected with 400
+  PASS  Invalid query parameter pageSize=101 is rejected with 400
+  PASS  Invalid query parameter pageSize=-1 is rejected with 400
+  PASS  Invalid query parameter sortBy=balance is rejected with 400
+  PASS  Invalid query parameter order=sideways is rejected with 400
+  PASS  Invalid query parameter account=1001 is rejected with 400
+  PASS  Invalid query parameter status=refunded is rejected with 400
+  PASS  Invalid query parameter unknownParam=1 is rejected with 400
+  PASS  Invalid query parameter page=1&page=2 is rejected with 400
+  PASS  Round-trip analytics match an independent detection over all transactions
+  PASS  Round-trip analytics respect custom criteria (windowHours=48&tolerancePct=15)
+  PASS  Round-trip analytics respect custom criteria (windowHours=2&tolerancePct=0)
+  PASS  Invalid round-trip criteria are rejected – windowHours=0
+  PASS  Invalid round-trip criteria are rejected – windowHours=500
+  PASS  Invalid round-trip criteria are rejected – tolerancePct=-1
+  PASS  Invalid round-trip criteria are rejected – tolerancePct=abc
+
+Feature: POST /api/transfers – validation and boundary conditions
+  PASS  Valid transfer returns 201 and the created transaction
+  PASS  missing fromAccount is rejected
+  PASS  missing toAccount is rejected
+  PASS  missing amount is rejected
+  PASS  missing all required fields is rejected
+  PASS  empty object is rejected
+  PASS  empty-string fromAccount is rejected
+  PASS  null amount is rejected
+  PASS  Body that is not a JSON object is rejected – malformed JSON
+  PASS  Body that is not a JSON object is rejected – JSON array
+  PASS  Body that is not a JSON object is rejected – JSON string
+  PASS  Body that is not a JSON object is rejected – JSON null
+  PASS  Wrong content type is rejected with 415
+  PASS  Description of 1 characters returns 201
+  PASS  Description of 140 characters returns 201
+  PASS  Description of 141 characters returns 422
+  PASS  Description of 5000 characters returns 422
+  PASS  Description of 20000 characters returns 413
+  PASS  A 140-character description made of emoji counts characters, not bytes
+  PASS  Printable special characters are accepted and returned exactly – emoji
+  PASS  Printable special characters are accepted and returned exactly – multi-language unicode
+  PASS  Printable special characters are accepted and returned exactly – SQL injection attempt
+  PASS  Printable special characters are accepted and returned exactly – HTML/script injection attempt
+  PASS  Printable special characters are accepted and returned exactly – quotes and backslashes
+  PASS  Printable special characters are accepted and returned exactly – zero-width and RTL marks
+  PASS  Printable special characters are accepted and returned exactly – percent and underscore wildcards
+  PASS  Control characters in the description are rejected – null byte
+  PASS  Control characters in the description are rejected – newline
+  PASS  Control characters in the description are rejected – tab
+  PASS  Control characters in the description are rejected – bell control character
+  PASS  Invalid account IDs are rejected – SQL injection in account ID
+  PASS  Invalid account IDs are rejected – lower-case prefix
+  PASS  Invalid account IDs are rejected – too many digits
+  PASS  Invalid account IDs are rejected – full-width digits
+  PASS  Invalid account IDs are rejected – very long string
+  PASS  Invalid account IDs are rejected – number instead of string
+  PASS  Amount 0.01 returns 201
+  PASS  Amount 1000000 returns 201
+  PASS  Amount 1000000.01 returns 422
+  PASS  Amount 0 returns 422
+  PASS  Amount -5 returns 422
+  PASS  Amount 0.001 returns 422
+  PASS  Amount 1e309 returns 422
+  PASS  Amount "100" returns 422
+  PASS  Amount true returns 422
+  PASS  Same source and destination
+  PASS  Unknown destination account
+  PASS  Frozen source account
+  PASS  Frozen destination account
+  PASS  Transfer larger than the available balance
+  PASS  Unknown fields are rejected instead of silently ignored
+
+Total: 73 scenarios, 73 passed, 0 failed

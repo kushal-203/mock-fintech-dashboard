@@ -1,0 +1,19 @@
+
+=== results/ui/cucumber-report.json ===
+
+Feature: Transaction dashboard
+  PASS  Dashboard loads with summary figures that match the underlying data
+  PASS  Trend chart renders valid, non-zero data that matches the transactions
+  PASS  Filtering by status "Completed" updates the table
+  PASS  Filtering by status "Pending" updates the table
+  PASS  Filtering by status "Failed" updates the table
+  PASS  Filtering by account shows only transfers involving that account
+  PASS  Combining account and status filters with sorting by amount
+  PASS  Searching by transaction ID finds exactly that transaction
+  PASS  A search with no matches shows an empty-state message
+  PASS  Paging through the results
+  PASS  Round-trip anomalies are flagged on the dashboard
+  PASS  Sending a transfer from the dashboard updates the table and the summary
+  PASS  A transfer that breaks the rules is rejected with a clear message
+
+Total: 13 scenarios, 13 passed, 0 failed

@@ -1,0 +1,181 @@
+You are a senior QA automation engineer repairing a broken Playwright locator.
+
+## Broken locator
+- Selector: button.btn-primary.submit-transfer
+- What it is for (intent): Button that sends a new transfer
+- Expected ARIA role: button
+- Why it probably broke: Chained utility classes that are not part of the markup
+
+## Current page – ARIA snapshot (truncated)
+- banner: Mock FinTech Demo data · September 2026 · USD
+- main:
+  - heading "Transaction Dashboard" [level=1]
+  - region "Summary":
+    - article "Total volume":
+      - heading "Total volume" [level=2]
+      - paragraph: $1,284,756.35
+      - paragraph: Completed transfers
+    - article "Transactions":
+      - heading "Transactions" [level=2]
+      - paragraph: "131"
+      - paragraph: 106 completed · 17 pending · 8 failed
+    - article "Active accounts":
+      - heading "Active accounts" [level=2]
+      - paragraph: "9"
+      - paragraph: Not frozen
+    - article "Recent flags":
+      - heading "Recent flags" [level=2]
+      - paragraph: "7"
+      - paragraph: Round-trip transfers (±10%, 24h)
+  - region "Daily transaction volume":
+    - heading "Daily transaction volume" [level=2]
+    - img "Daily transaction volume chart"
+    - paragraph: "Bars: completed volume (USD) · Line: number of completed transfers"
+  - region "Flagged round-trip transfers":
+    - heading "Flagged round-trip transfers" [level=2]
+    - paragraph: A → B followed by B → A within 24 hours, amount within 10%.
+    - table "Flagged round-trip transfers":
+      - rowgroup:
+        - row "Accounts Sent Returned Diff Gap":
+          - columnheader "Accounts"
+          - columnheader "Sent"
+          - columnheader "Returned"
+          - columnheader "Diff"
+          - columnheader "Gap"
+      - rowgroup:
+        - row "ACC-1001 ⇄ ACC-1002 $10,000.00 TXN-000015 $10,000.00 TXN-000016 0% 2 h":
+          - cell "ACC-1001 ⇄ ACC-1002"
+          - cell "$10,000.00 TXN-000015"
+          - cell "$10,000.00 TXN-000016"
+          - cell "0%"
+          - cell "2 h"
+        - row "ACC-1003 ⇄ ACC-1004 $50,000.00 TXN-000020 $45,500.00 TXN-000023 -9% 20 h":
+          - cell "ACC-1003 ⇄ ACC-1004"
+          - cell "$50,000.00 TXN-000020"
+          - cell "$45,500.00 TXN-000023"
+          - cell "-9%"
+          - cell "20 h"
+        - row "ACC-1005 ⇄ ACC-1006 $20,000.00 TXN-000035 $22,000.00 TXN-000039 +10% 24 h":
+          - cell "ACC-1005 ⇄ ACC-1006"
+          - cell "$20,000.00 TXN-000035"
+          - cell "$22,000.00 TXN-000039"
+          - cell "+10%"
+          - cell "24 h"
+        - row "ACC-1004 ⇄ ACC-1005 $12,000.00 TXN-000063 $12,600.00 TXN-000064 +5% 3 h":
+          - cell "ACC-1004 ⇄ ACC-1005"
+          - cell "$12,000.00 TXN-000063"
+          - cell "$12,600.00 TXN-000064"
+          - cell "+5%"
+          - cell "3 h"
+        - row "ACC-1001 ⇄ ACC-1008 $40,000.00 TXN-000097 $39,000.00 TXN-000100 -2.5% 6 h":
+          - cell "ACC-1001 ⇄ ACC-1008"
+          - cell "$40,000.00 TXN-000097"
+          - cell "$39,000.00 TXN-000100"
+          - cell "-2.5%"
+          - cell "6 h"
+        - row "ACC-1001 ⇄ ACC-1008 $40,000.00 TXN-000097 $41,000.00 TXN-000104 +2.5% 23 h":
+          - cell "ACC-1001 ⇄ ACC-1008"
+          - cell "$40,000.00 TXN-000097"
+          - cell "$41,000.00 TXN-000104"
+          - cell "+2.5%"
+          - cell "23 h"
+        - row "ACC-1009 ⇄ ACC-1003 $2,500.00 TXN-000118 $2,450.00 TXN-000119 -2% 1 h":
+          - cell "ACC-1009 ⇄ ACC-1003"
+          - cell "$2,500.00 TXN-000118"
+          - cell "$2,450.00 TXN-000119"
+          - cell "-2%"
+          - cell "1 h"
+  - region "Transactions":
+    - heading "Transactions" [level=2]
+    - form "Transaction filters":
+      - text: Account
+      - combobox "Account":
+        - option "All accounts" [selected]
+        - option "ACC-1001 · Aarav Mehta"
+        - option "ACC-1002 · Bilal Khan"
+        - option "ACC-1003 · Chen Wei Trading Ltd"
+        - option "ACC-1004 · Divya Nair"
+        - option "ACC-1005 · Erik Johansson"
+        - option "ACC-1006 · Farah Siddiqui Imports"
+        - option "ACC-1007 · Gabriel Costa"
+        - option "ACC-1008 · Hana Sato Consulting"
+        - option "ACC-1009 · Isabel Romero"
+        - option "ACC-1010 · Jonas Weber (frozen)"
+      - text: Status
+      - combobox "Status":
+        - option "All statuses" [selected]
+        - option "Completed"
+        - option "Pending"
+        - option "Failed"
+      - text: Search
+      - searchbox "Search"
+      - text: Sort by
+      - combobox "Sort by":
+        - option "Newest first" [selected]
+        - option "Oldest first"
+        - 'option "Amount: high to low"'
+        - 'option "Amount: low to high"'
+      - button "Apply filters"
+      - button "Reset"
+    - status: Showing 1–10 of 131 transactions
+    - table "Transactions":
+      - rowgroup:
+        - row "ID Date (UTC) From To Description Amount Status":
+          - columnheader "ID"
+          - columnheader "Date (UTC)"
+          - columnheader "From"
+          - columnheader "To"
+          - columnheader "Description"
+          - columnheader "Amount"
+          - columnheader "Status"
+      - rowgroup:
+        - row "TXN-000131 2026-09-30 18:05 ACC-1006 ACC-1009 Loan repayment $30,688.62 completed":
+          - cell "TXN-000131"
+          - cell "2026-09-30 18:05"
+          - cell "ACC-1006"
+          - cell "ACC-1009"
+          - cell "Loan repayment"
+          - cell "$30,688.62"
+          - cell "completed"
+        - row "TXN-000130 2026-09-30 08:32 ACC-1006 ACC-1003 Loan repayment $7,951.83 pending":
+          - cell "TXN-000130"
+          - cell "2026-09-30 08:32"
+          - cell "ACC-1006"
+          - cell "ACC-1003"
+          - cell "Loan repayment"
+          - cell "$7,951.83"
+          - cell "pending"
+        - row "TXN-000129 2026-09-29 20:06 ACC-1006 ACC-1003 Supplier settlement $4,579.95 completed":
+          - cell "TXN-000129"
+          - cell "2026-09-29 20:06"
+          - cell "ACC-1006"
+          - cell "ACC-1003"
+          - cell "Supplier settlement"
+          - cell "$4,579.95"
+          - cell "completed"
+        - row "TXN-000128 2026-09-29 13:32 ACC-1002 ACC-1003 Loan repayment $377.47 completed":
+          - cell "TXN-000128"
+          - cell "2026-09-29 13:32"
+          - cell "ACC-1002"
+          - cell "ACC-1003"
+          - cell "Loan repayment"
+          - cell "$377.47"
+          - cell "completed"
+ 
+
+## Current page – visible candidate elements (JSON)
+[{"tag":"h1","role":"heading","name":"Transaction Dashboard","testId":null,"id":null},{"tag":"article","role":null,"name":"Total volume","testId":"kpi-total-volume","id":null},{"tag":"h2","role":"heading","name":"Total volume","testId":null,"id":"kpi-vol-label"},{"tag":"article","role":null,"name":"Transactions","testId":"kpi-transactions","id":null},{"tag":"h2","role":"heading","name":"Transactions","testId":null,"id":"kpi-txn-label"},{"tag":"p","role":null,"name":"106 completed · 17 pending · 8 failed","testId":"kpi-status-breakdown","id":null},{"tag":"article","role":null,"name":"Active accounts","testId":"kpi-active-accounts","id":null},{"tag":"h2","role":"heading","name":"Active accounts","testId":null,"id":"kpi-acc-label"},{"tag":"article","role":null,"name":"Recent flags","testId":"kpi-flagged","id":null},{"tag":"h2","role":"heading","name":"Recent flags","testId":null,"id":"kpi-flag-label"},{"tag":"h2","role":"heading","name":"Daily transaction volume","testId":null,"id":"chart-title"},{"tag":"canvas","role":"img","name":"Daily transaction volume chart","testId":"volume-chart","id":"volume-chart"},{"tag":"h2","role":"heading","name":"Flagged round-trip transfers","testId":null,"id":"flags-title"},{"tag":"table","role":"table","name":"Flagged round-trip transfers","testId":"flags-table","id":null},{"tag":"tr","role":null,"name":"ACC-1001 ⇄ ACC-1002 $10,000.00 TXN-000015 $10,000.00 TXN-000016 0% 2 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1003 ⇄ ACC-1004 $50,000.00 TXN-000020 $45,500.00 TXN-000023 -9% 20 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1005 ⇄ ACC-1006 $20,000.00 TXN-000035 $22,000.00 TXN-000039 +10% 24 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1004 ⇄ ACC-1005 $12,000.00 TXN-000063 $12,600.00 TXN-000064 +5% 3 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1001 ⇄ ACC-1008 $40,000.00 TXN-000097 $39,000.00 TXN-000100 -2.5% 6 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1001 ⇄ ACC-1008 $40,000.00 TXN-000097 $41,000.00 TXN-000104 +2.5% 23 h","testId":"flag-row","id":null},{"tag":"tr","role":null,"name":"ACC-1009 ⇄ ACC-1003 $2,500.00 TXN-000118 $2,450.00 TXN-000119 -2% 1 h","testId":"flag-row","id":null},{"tag":"h2","role":"heading","name":"Transactions","testId":null,"id":"txn-title"},{"tag":"select","role":"combobox","name":"Account","testId":null,"id":"filter-account"},{"tag":"select","role":"combobox","name":"Status","testId":null,"id":"filter-status"},{"tag":"input","role":"searchbox","name":"Search","testId":null,"id":"filter-search"},{"tag":"select","role":"combobox","name":"Sort by","testId":null,"id":"filter-sort"},{"tag":"button","role":"button","name":"Apply filters","testId":null,"id":null},{"tag":"button","role":"button","name":"Reset","testId":null,"id":"reset-filters"},{"tag":"p","role":"status","name":"Showing 1–10 of 131 transactions","testId":"result-count","id":null},{"tag":"table","role":"table","name":"Transactions","testId":"transactions-table","id":null},{"tag":"tr","role":null,"name":"TXN-000131 2026-09-30 18:05 ACC-1006 ACC-1009 Loan repayment $30,688.62 complete","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000130 2026-09-30 08:32 ACC-1006 ACC-1003 Loan repayment $7,951.83 pending","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000129 2026-09-29 20:06 ACC-1006 ACC-1003 Supplier settlement $4,579.95 comp","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000128 2026-09-29 13:32 ACC-1002 ACC-1003 Loan repayment $377.47 completed","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000127 2026-09-29 07:10 ACC-1003 ACC-1006 Subscription $2,405.64 failed","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000126 2026-09-28 18:25 ACC-1002 ACC-1004 Loan repayment $35,046.10 complete","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000125 2026-09-28 06:39 ACC-1007 ACC-1006 Travel reimbursement $55,333.44 pe","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000124 2026-09-27 21:16 ACC-1004 ACC-1001 Rent $3,823.87 completed","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000123 2026-09-27 21:14 ACC-1002 ACC-1004 Refund $1,845.26 completed","testId":"txn-row","id":null},{"tag":"tr","role":null,"name":"TXN-000122 2026-09-27 17:57 ACC-1006 ACC-1007 Supplier settlement $1,933.92 fail","testId":"txn-row","id":null},{"tag":"button","role":"button","name":"Previous","testId":null,"id":"prev-page"},{"tag":"span","role":null,"name":"Page 1 of 14","testId":"page-indicator","id":null},{"tag":"button","role":"button","name":"Next","testId":null,"id":"next-page"},{"tag":"h2","role":"heading","name":"New transfer","testId":null,"id":"transfer-title"},{"tag":"select","role":"combobox","name":"From account","testId":null,"id":"transfer-from"},{"tag":"select","role":"combobox","name":"To account","testId":null,"id":"transfer-to"},{"tag":"input","role":"spinbutton","name":"Amount (USD)","testId":null,"id":"transfer-amount"},{"tag":"input","role":"textbox","name":"Description","testId":null,"id":"transfer-description"},{"tag":"button","role":"button","name":"Send transfer","testId":null,"id":null}]
+
+## Rules
+1. Choose ONE element from the candidate list that matches the intent. Never invent an element.
+2. Use the most resilient strategy available, in this order:
+   role + accessible name  >  data-testid  >  label  >  exact visible text.
+   Never return CSS selectors, ids, classes, nth-child or XPath.
+3. Do not use an accessible name that contains live data (counts, amounts, dates) – prefer data-testid then.
+4. The locator must match exactly one element.
+5. If nothing matches the intent, answer {"locator": null, "confidence": 0, "reason": "..."}.
+
+## Answer with JSON only
+{"locator": {"strategy": "role|testid|label|text", "role": "<if role>", "name": "<if role>", "value": "<if testid/label/text>"},
+ "confidence": <0..1>,
+ "reason": "<one sentence>"}

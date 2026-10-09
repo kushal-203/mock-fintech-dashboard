@@ -1,0 +1,16 @@
+
+> mock-fintech-dashboard@1.0.0 heal:verify
+> node --disable-warning=ExperimentalWarning tests/self-healing/verify-validator.js
+
+✔ rejected  applyFiltersButton   {"strategy":"role","role":"button","name":"Reset"}  (right role, wrong button (also reloads the table))
+             failed check: click → transactions re-requested with the chosen filter
+✔ rejected  resultSummary        {"strategy":"testid","value":"page-indicator"}  (nearby text element with a different meaning)
+             failed check: text looks like "Showing x–y of n transactions"
+✔ rejected  trendChart           {"strategy":"testid","value":"flags-table"}  (unique and visible, but not a chart)
+             failed check: has role "img"; element is a live Chart.js chart with data
+✔ rejected  statusFilter         {"strategy":"role","role":"combobox","name":"Account"}  (right role, wrong dropdown)
+             failed check: behaviour (select-keeps-value)
+✔ rejected  sendTransferButton   {"strategy":"css","value":"button"}  (disallowed CSS strategy)
+             failed check: allowed locator strategy
+
+All 5 wrong proposals were rejected by validation.

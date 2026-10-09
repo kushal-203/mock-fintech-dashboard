@@ -1,0 +1,24 @@
+--- a/tests/self-healing/BrittleDashboardPage.js  (applyFiltersButton)
++++ b/tests/page-objects/... (suggested)
+- page.locator("#apply-btn")
++ page.getByRole('button', { name: 'Apply filters', exact: true })
+
+--- a/tests/self-healing/BrittleDashboardPage.js  (statusFilter)
++++ b/tests/page-objects/... (suggested)
+- page.locator("xpath=/html/body/div[1]/main/section[3]/form/label[2]/select")
++ page.getByRole('combobox', { name: 'Status', exact: true })
+
+--- a/tests/self-healing/BrittleDashboardPage.js  (resultSummary)
++++ b/tests/page-objects/... (suggested)
+- page.locator(".results-summary")
++ page.getByTestId('result-count')
+
+--- a/tests/self-healing/BrittleDashboardPage.js  (trendChart)
++++ b/tests/page-objects/... (suggested)
+- page.locator("canvas#chart-0")
++ page.getByRole('img', { name: 'Daily transaction volume chart', exact: true })
+
+--- a/tests/self-healing/BrittleDashboardPage.js  (sendTransferButton)
++++ b/tests/page-objects/... (suggested)
+- page.locator("button.btn-primary.submit-transfer")
++ page.getByRole('button', { name: 'Send transfer', exact: true })

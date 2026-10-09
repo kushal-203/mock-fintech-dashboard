@@ -1,0 +1,211 @@
+{
+  "engine": "heuristic",
+  "generatedAt": "2026-10-09T07:59:10.227Z",
+  "minConfidence": 0.6,
+  "results": [
+    {
+      "name": "applyFiltersButton",
+      "brokenSelector": "#apply-btn",
+      "antiPattern": "Hard-coded id that the markup never had (the button is identified by its text)",
+      "detection": {
+        "broken": true,
+        "count": 0,
+        "reason": "no element matched"
+      },
+      "proposal": {
+        "locator": {
+          "strategy": "role",
+          "role": "button",
+          "name": "Apply filters"
+        },
+        "confidence": 0.99,
+        "reason": "Token overlap with intent: apply, filter; role=button"
+      },
+      "validation": [
+        {
+          "check": "resolves to exactly one element",
+          "pass": true,
+          "detail": "count=1"
+        },
+        {
+          "check": "is visible",
+          "pass": true
+        },
+        {
+          "check": "has role \"button\"",
+          "pass": true
+        },
+        {
+          "check": "click → transactions re-requested with the chosen filter",
+          "pass": true,
+          "detail": "/transactions?status=failed&sortBy=date&order=desc&page=1&pageSize=10"
+        }
+      ],
+      "suggestedCode": "page.getByRole('button', { name: 'Apply filters', exact: true })",
+      "accepted": true,
+      "status": "HEALED (pending human review)"
+    },
+    {
+      "name": "statusFilter",
+      "brokenSelector": "xpath=/html/body/div[1]/main/section[3]/form/label[2]/select",
+      "antiPattern": "Absolute XPath tied to an old layout (wrapper <div>, <label> nesting) that has since changed",
+      "detection": {
+        "broken": true,
+        "count": 0,
+        "reason": "no element matched"
+      },
+      "proposal": {
+        "locator": {
+          "strategy": "role",
+          "role": "combobox",
+          "name": "Status"
+        },
+        "confidence": 0.99,
+        "reason": "Token overlap with intent: statu; role=combobox"
+      },
+      "validation": [
+        {
+          "check": "resolves to exactly one element",
+          "pass": true,
+          "detail": "count=1"
+        },
+        {
+          "check": "is visible",
+          "pass": true
+        },
+        {
+          "check": "has role \"combobox\"",
+          "pass": true
+        },
+        {
+          "check": "select \"failed\" → value is kept",
+          "pass": true
+        }
+      ],
+      "suggestedCode": "page.getByRole('combobox', { name: 'Status', exact: true })",
+      "accepted": true,
+      "status": "HEALED (pending human review)"
+    },
+    {
+      "name": "resultSummary",
+      "brokenSelector": ".results-summary",
+      "antiPattern": "Styling class name that was renamed during a CSS refactor",
+      "detection": {
+        "broken": true,
+        "count": 0,
+        "reason": "no element matched"
+      },
+      "proposal": {
+        "locator": {
+          "strategy": "testid",
+          "value": "result-count"
+        },
+        "confidence": 0.99,
+        "reason": "Token overlap with intent: show, transaction, result, count; role=status"
+      },
+      "validation": [
+        {
+          "check": "resolves to exactly one element",
+          "pass": true,
+          "detail": "count=1"
+        },
+        {
+          "check": "is visible",
+          "pass": true
+        },
+        {
+          "check": "text looks like \"Showing x–y of n transactions\"",
+          "pass": true,
+          "detail": "Showing 1–10 of 131 transactions"
+        }
+      ],
+      "suggestedCode": "page.getByTestId('result-count')",
+      "accepted": true,
+      "status": "HEALED (pending human review)"
+    },
+    {
+      "name": "trendChart",
+      "brokenSelector": "canvas#chart-0",
+      "antiPattern": "Auto-generated id (Chart.js-style) that is not stable between builds",
+      "detection": {
+        "broken": true,
+        "count": 0,
+        "reason": "no element matched"
+      },
+      "proposal": {
+        "locator": {
+          "strategy": "role",
+          "role": "img",
+          "name": "Daily transaction volume chart"
+        },
+        "confidence": 0.99,
+        "reason": "Token overlap with intent: daily, transaction, volume, chart; role=img"
+      },
+      "validation": [
+        {
+          "check": "resolves to exactly one element",
+          "pass": true,
+          "detail": "count=1"
+        },
+        {
+          "check": "is visible",
+          "pass": true
+        },
+        {
+          "check": "has role \"img\"",
+          "pass": true
+        },
+        {
+          "check": "element is a live Chart.js chart with data",
+          "pass": true,
+          "detail": "29 points"
+        }
+      ],
+      "suggestedCode": "page.getByRole('img', { name: 'Daily transaction volume chart', exact: true })",
+      "accepted": true,
+      "status": "HEALED (pending human review)"
+    },
+    {
+      "name": "sendTransferButton",
+      "brokenSelector": "button.btn-primary.submit-transfer",
+      "antiPattern": "Chained utility classes that are not part of the markup",
+      "detection": {
+        "broken": true,
+        "count": 0,
+        "reason": "no element matched"
+      },
+      "proposal": {
+        "locator": {
+          "strategy": "role",
+          "role": "button",
+          "name": "Send transfer"
+        },
+        "confidence": 0.99,
+        "reason": "Token overlap with intent: send, transfer; role=button"
+      },
+      "validation": [
+        {
+          "check": "resolves to exactly one element",
+          "pass": true,
+          "detail": "count=1"
+        },
+        {
+          "check": "is visible",
+          "pass": true
+        },
+        {
+          "check": "has role \"button\"",
+          "pass": true
+        },
+        {
+          "check": "click → transfer request sent and feedback shown",
+          "pass": true,
+          "detail": "Transfer rejected (400): Missing required field(s): amount"
+        }
+      ],
+      "suggestedCode": "page.getByRole('button', { name: 'Send transfer', exact: true })",
+      "accepted": true,
+      "status": "HEALED (pending human review)"
+    }
+  ]
+}
